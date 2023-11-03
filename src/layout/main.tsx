@@ -6,15 +6,28 @@ import { Box, Flex, Spacer } from "@chakra-ui/react";
 
 export default function Main({ children }: { children: ReactNode }) {
   return (
-    <Box width="full" h={"full"}>
+    <Box width="full" h={"full"} m={"0 auto"}>
       <Flex gap={4}>
-        <Box w={"300px"} minH="100vh" left={"0"} borderRight={"1px solid #fff"}>
+        <Box
+          w={"300px"}
+          minH="100vh"
+          left={"0"}
+          borderRight={"1px solid #fff"}
+          marginLeft={2}
+        >
           <Navbar />
         </Box>
 
         {children}
 
-        <Box w={"350px"} right={"0"} position={"fixed"}>
+        <Box
+          marginLeft={2}
+          w={"350px"}
+          right={"0"}
+          position={"fixed"}
+          h={"full"}
+          borderLeft={"1px solid #fff"}
+        >
           <Profile />
         </Box>
       </Flex>

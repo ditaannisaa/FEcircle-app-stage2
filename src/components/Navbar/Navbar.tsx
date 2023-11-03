@@ -21,6 +21,10 @@ export default function Navbar() {
     navigate("/auth/login");
   };
 
+  const handleToFollow = () => {
+    navigate("/follow");
+  };
+
   return (
     <Box
       display={"flex"}
@@ -57,7 +61,7 @@ export default function Navbar() {
             <p>Search</p>
           </Box>
         </Button>
-        <Button justifyContent={"start"}>
+        <Button justifyContent={"start"} onClick={handleToFollow}>
           <Box
             display={"flex"}
             alignItems={"center"}
@@ -86,6 +90,7 @@ export default function Navbar() {
 
         <Button
           mt={2}
+          mb={2}
           p={4}
           w={"100px"}
           borderRadius={10}

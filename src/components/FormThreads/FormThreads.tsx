@@ -25,6 +25,7 @@ export default function FormThreads() {
     image: "",
   });
   const queryClient = useQueryClient();
+  const profile = useSelector((state: any) => state.auth.profile_picture);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = event.target;

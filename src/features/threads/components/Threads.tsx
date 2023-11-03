@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "../hooks/useUser";
 
 export default function Threads(props: IThreads) {
-  const user = useUser();
+  const { user } = useUser();
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -36,7 +36,7 @@ export default function Threads(props: IThreads) {
       queryClient.invalidateQueries({ queryKey: ["threads"] });
     },
     onError: (err) => {
-      console.log(err);
+      console.log(err, "error unlike");
     },
   });
 

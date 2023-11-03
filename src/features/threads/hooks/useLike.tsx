@@ -11,5 +11,5 @@ export function useLike() {
     queryFn: async () => await Api.get("/likes").then((res) => res.data),
   });
 
-  return;
+  return likes;
 }

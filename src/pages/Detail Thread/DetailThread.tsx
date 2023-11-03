@@ -8,7 +8,7 @@ import { LikeType } from "../../types/ThreadType";
 import { useDetailThread } from "../../features/threads/hooks/useDetailThread";
 
 export default function DetailThread() {
-  const user = useUser();
+  const { user } = useUser();
   const { handleButtonLike, handleButtonUnlike, thread, isLoading } =
     useDetailThread();
 

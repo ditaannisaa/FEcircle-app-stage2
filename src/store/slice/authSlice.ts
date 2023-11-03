@@ -8,6 +8,8 @@ const initialState: TUser = {
   username: "",
   email: "",
   profile_picture: "",
+  followers: [],
+  following: [],
 };
 
 export const authSlice = createSlice({
@@ -26,6 +28,8 @@ export const authSlice = createSlice({
         username: payload.user.username,
         email: payload.user.email,
         profile_picture: payload.user.profile_picture,
+        followers: payload.user.followers,
+        following: payload.user.following,
       };
       return user;
     },
@@ -39,6 +43,8 @@ export const authSlice = createSlice({
         username: payload.username,
         email: payload.email,
         profile_picture: payload.profile_picture,
+        followers: payload.followers,
+        following: payload.following,
       };
       return user;
     },

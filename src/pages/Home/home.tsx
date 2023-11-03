@@ -15,7 +15,7 @@ export default function Home() {
   });
 
   return (
-    <Box w={"550px"} borderRight={"1px solid #fff"}>
+    <Box w={"550px"}>
       <Box gap={4}>
         <Heading fontSize={20} fontWeight={"medium"} p={4}>
           Home
