@@ -1,26 +1,14 @@
+import { TFollow } from "./FollowType";
+
 export type TUser = {
   id?: number;
   full_name?: string;
   username?: string;
   email?: string;
   profile_picture?: string;
-  followers?: {
-    id: number;
-    username: string;
-    full_name: string;
-    email: string;
-    profile_picture?: any;
-    profile_description?: string;
-  }[];
-  following?: {
-    id: number;
-    username: string;
-    full_name: string;
-    email: string;
-    profile_picture?: string;
-    profile_description?: string;
-  }[];
-};
+  followers?: TFollow[];
+  following?: TFollow[];
+}[];
 
 export type TRegister = {
   full_name: string;

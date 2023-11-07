@@ -19,11 +19,6 @@ import { useSelector } from "react-redux";
 
 export default function Profile() {
   const { user } = useUser();
-  console.log(user, "iniuser gan");
-
-  const profile = useSelector((state: any) => {
-    state;
-  });
 
   return (
     <Box m={4}>
