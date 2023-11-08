@@ -25,6 +25,10 @@ export default function Navbar() {
     navigate("/follow");
   };
 
+  const handleToSearch = () => {
+    navigate("/search");
+  };
+
   return (
     <Box
       display={"flex"}
@@ -50,7 +54,7 @@ export default function Navbar() {
             <p>Home</p>
           </Box>
         </Button>
-        <Button justifyContent={"start"}>
+        <Button justifyContent={"start"} onClick={handleToSearch}>
           <Box
             display={"flex"}
             alignItems={"center"}

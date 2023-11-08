@@ -1,9 +1,10 @@
 export type TUser = {
-  id?: number;
+  id: number;
   full_name?: string;
   username?: string;
   email?: string;
   profile_picture?: string;
+  profile_description?: string;
   followers?: {
     id: number;
     username: string;

@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "../hooks/useUser";
 
 export default function Threads(props: IThreads) {
-  const { user } = useUser();
+  const { user, isLoadingUser } = useUser();
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -49,6 +49,7 @@ export default function Threads(props: IThreads) {
     navigate(`/detail-thread/${props.id}`);
   };
 
+  console.log(props.like, "props like");
   return (
     <Box display={"flex"} flexDirection={"column"} gap={4}>
       <Box display={"flex"} gap={4} p={4}>
@@ -79,8 +80,8 @@ export default function Threads(props: IThreads) {
 
             <Box display={"flex"} gap={4}>
               <Box display={"flex"} gap={2}>
-                {props.like
-                  .map((like) => like.user.id)
+                {props?.like
+                  .map((like) => like?.user?.id)
                   .includes(user?.user?.id) ? (
                   <Button onClick={handleButtonUnlike}>
                     <AiTwotoneHeart color={"red"} />

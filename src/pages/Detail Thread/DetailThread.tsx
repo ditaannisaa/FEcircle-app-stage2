@@ -11,17 +11,9 @@ export default function DetailThread() {
   const { user } = useUser();
   const { handleButtonLike, handleButtonUnlike, thread, isLoading } =
     useDetailThread();
+  console.log(thread);
 
-  if (isLoading)
-    return (
-      <Spinner
-        thickness="4px"
-        speed="8s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-      />
-    );
+  if (isLoading) return <Spinner size="xl" />;
 
   return (
     <Box display={"flex"} flexDirection={"column"} p={4} gap={4} mt={4}>
@@ -37,12 +29,12 @@ export default function DetailThread() {
             <Box display={"flex"} flexDirection={"column"} gap={2}>
               <Box display={"flex"} flexDirection={"row"} gap={2}>
                 <Text fontSize={12} fontWeight={"medium"}>
-                  {thread.user?.username}
+                  {thread?.user?.username}
                 </Text>
                 <Text fontSize={12}>{thread.user?.username}</Text>
                 <Text fontSize={12}>4h</Text>
               </Box>
-              <Text fontSize={12}>{thread.content}</Text>
+              <Text fontSize={12}>{thread?.content}</Text>
               {thread?.image ? (
                 <Box>
                   <Image
@@ -58,7 +50,7 @@ export default function DetailThread() {
               <Box display={"flex"} gap={4} mb={4}>
                 <Box display={"flex"} gap={2}>
                   {thread?.like
-                    .map((like: LikeType) => like?.user.id)
+                    .map((like: LikeType) => like?.user?.id)
                     .includes(user?.user?.id) ? (
                     <Button onClick={handleButtonUnlike}>
                       <AiTwotoneHeart color={"red"} />
@@ -68,17 +60,17 @@ export default function DetailThread() {
                       <AiOutlineHeart />
                     </Button>
                   )}
-                  <Text fontSize={12}>{thread?.like.length}</Text>
+                  <Text fontSize={12}>{thread?.like?.length}</Text>
                 </Box>
                 <Box display={"flex"} gap={2}>
                   <LiaComment />
-                  <Text fontSize={12}>{thread?.reply.length} replies</Text>
+                  <Text fontSize={12}>{thread?.reply?.length} replies</Text>
                 </Box>
               </Box>
 
               <Box>
                 <FormReply />
-                {thread.reply?.map((data: RepliesType) => (
+                {thread?.reply?.map((data: RepliesType) => (
                   <Box
                     className="reply-content"
                     display={"flex"}
@@ -89,24 +81,24 @@ export default function DetailThread() {
                       h={"30px"}
                       w={"30px"}
                       objectFit={"cover"}
-                      src={data.user?.profile_picture}
+                      src={data?.user?.profile_picture}
                     />
                     <Box display={"flex"} flexDirection={"column"} gap={2}>
                       <Box display={"flex"} flexDirection={"row"} gap={2}>
                         <Text fontSize={12} fontWeight={"medium"}>
-                          {data.user?.username}
+                          {data?.user?.username}
                         </Text>
-                        <Text fontSize={12}>{data.user?.username}</Text>
+                        <Text fontSize={12}>{data?.user?.username}</Text>
                       </Box>
-                      <Text fontSize={12}>{data.text}</Text>
-                      {!data.image ? (
+                      <Text fontSize={12}>{data?.text}</Text>
+                      {!data?.image ? (
                         <Box></Box>
                       ) : (
                         <Box>
                           <Image
                             objectFit={"cover"}
                             boxSize={"400px"}
-                            src={data.image}
+                            src={data?.image}
                           />
                         </Box>
                       )}

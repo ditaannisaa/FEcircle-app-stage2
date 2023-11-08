@@ -14,6 +14,7 @@ import {
   CardFooter,
   Button,
   Avatar,
+  Spinner,
 } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
@@ -26,38 +27,33 @@ import { AUTH_CHECK } from "../../store/RootReducer";
 
 export default function Follow() {
   const [selectedTab, setSelectedTab] = useState(null);
-  const { user, allUser } = useUser();
-  console.log(allUser, "ini semua user");
+  const { user, allUser, isLoadingUser } = useUser();
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
-  const [follow, setFollow] = useState({
-    followingId: allUser.id,
-  });
 
   const handleTabClick = (index: any) => {
     setSelectedTab(index === selectedTab ? null : index);
   };
 
-  // const { mutate: handleFollow } = useMutation({
-  //   mutationFn: () => {
-  //     return Api.post("/follow", follow);
-  //   },
-  //   onSuccess: async () => {
-  //     queryClient.invalidateQueries({ queryKey: ["users"] });
-  //     const response = await Api.get("/auth/check");
-  //     dispatch(AUTH_CHECK(response.data.user));
-  //   },
-  //   onError: (err) => {
-  //     console.log(err, "failed to follow");
-  //   },
-  // });
+  const { mutate: handleFollow } = useMutation({
+    mutationFn: (followId: number) => {
+      return Api.post("/follow", { followingId: followId });
+    },
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      const response = await Api.get("/auth/check");
+      dispatch(AUTH_CHECK(response.data.user));
+    },
+    onError: (err) => {
+      console.log(err, "failed to follow");
+    },
+  });
 
-  // function handleClickFollow() {
-  //   setFollow({
-  //     followingId: allUser.id,
-  //   });
-  //   handleFollow();
-  // }
+  function handleClickFollow(followId: number) {
+    if (followId !== undefined) {
+      handleFollow(followId);
+    }
+  }
 
   return (
     <Box w={"550px"}>
@@ -101,120 +97,173 @@ export default function Follow() {
           </TabList>
           <TabPanels>
             <TabPanel>
-              {user.user?.followers?.map((data: TFollow) => (
-                <Card
-                  direction={{ base: "column", sm: "row" }}
-                  overflow="hidden"
-                  variant="outline"
-                  mt={2}
-                >
-                  <Avatar
-                    objectFit="cover"
-                    alignSelf={"center"}
-                    ml={2}
-                    mr={2}
-                    h={"50px"}
-                    w={"50px"}
-                    src={data?.profile_picture}
-                  />
-
-                  <Stack w={"400px"}>
-                    <CardBody>
-                      <Text className="fullname" fontSize={"12px"} p={"1px"}>
-                        {data?.full_name}
-                      </Text>
-
-                      <Text className="username" fontSize={"12px"} p={"1px"}>
-                        @{data?.username}
-                      </Text>
-
-                      <Text className="username" fontSize={"12px"} p={"1px"}>
-                        {data?.profile_description}
-                      </Text>
-                    </CardBody>
-                  </Stack>
-                  {user.user?.following
-                    ?.map((follow: TFollow) => follow.id)
-                    .includes(user.user?.id) ? (
-                    <Box display={"flex"} justifyContent={"center"} w={"120px"}>
-                      <Button
-                        justifyContent={"center"}
-                        borderRadius={"10px"}
-                        border={"1px solid #fff"}
-                        fontSize={"12px"}
-                        p={4}
-                        h={"20px"}
+              {isLoadingUser ? (
+                <Spinner size="xl" />
+              ) : (
+                <>
+                  {user?.user?.followers?.map((data: TFollow) => (
+                    <Card
+                      direction={{ base: "column", sm: "row" }}
+                      overflow="hidden"
+                      variant="outline"
+                      mt={2}
+                    >
+                      <Avatar
+                        objectFit="cover"
                         alignSelf={"center"}
-                        // onClick={handleClickFollow}
-                      >
-                        Follow
-                      </Button>
-                    </Box>
-                  ) : (
-                    <Button
-                      justifyContent={"center"}
-                      borderRadius={"10px"}
-                      border={"1px solid #fff"}
-                      fontSize={"12px"}
-                      p={4}
-                      h={"20px"}
-                      alignSelf={"center"}
-                      // onClick={handleClickFollow}
-                    >
-                      Unfollow
-                    </Button>
-                  )}
-                </Card>
-              ))}
+                        ml={2}
+                        mr={2}
+                        h={"50px"}
+                        w={"50px"}
+                        src={data?.profile_picture}
+                      />
+
+                      <Stack w={"400px"}>
+                        <CardBody>
+                          <Text
+                            className="fullname"
+                            fontSize={"12px"}
+                            p={"1px"}
+                          >
+                            {data?.full_name}
+                          </Text>
+
+                          <Text
+                            className="username"
+                            fontSize={"12px"}
+                            p={"1px"}
+                          >
+                            @{data?.username}
+                          </Text>
+
+                          <Text
+                            className="username"
+                            fontSize={"12px"}
+                            p={"1px"}
+                          >
+                            {data?.profile_description}
+                          </Text>
+                        </CardBody>
+                      </Stack>
+                      {user?.user?.following
+                        ?.map((follow: TFollow) => follow?.id)
+                        .includes(data.id) ? (
+                        <Box
+                          display={"flex"}
+                          justifyContent={"center"}
+                          w={"120px"}
+                        >
+                          <Button
+                            justifyContent={"center"}
+                            borderRadius={"10px"}
+                            border={"1px solid #fff"}
+                            fontSize={"12px"}
+                            p={4}
+                            h={"20px"}
+                            alignSelf={"center"}
+                            onClick={() => handleClickFollow(data?.id)}
+                          >
+                            Follow
+                          </Button>
+                        </Box>
+                      ) : (
+                        <Box
+                          display={"flex"}
+                          justifyContent={"center"}
+                          w={"120px"}
+                        >
+                          <Button
+                            justifyContent={"center"}
+                            borderRadius={"10px"}
+                            border={"1px solid #fff"}
+                            fontSize={"12px"}
+                            p={4}
+                            h={"20px"}
+                            alignSelf={"center"}
+                            onClick={() => handleClickFollow(data?.id)}
+                          >
+                            Unfollow
+                          </Button>
+                        </Box>
+                      )}
+                    </Card>
+                  ))}
+                </>
+              )}
             </TabPanel>
+
             <TabPanel>
-              {user.user?.following?.map((following: TFollow) => (
-                <Card
-                  direction={{ base: "column", sm: "row" }}
-                  overflow="hidden"
-                  variant="outline"
-                  mt={2}
-                >
-                  <Avatar
-                    objectFit="cover"
-                    alignSelf={"center"}
-                    ml={2}
-                    mr={2}
-                    h={"50px"}
-                    w={"50px"}
-                    src={following?.profile_picture}
-                  />
-
-                  <Stack w={"400px"}>
-                    <CardBody>
-                      <Text className="fullname" fontSize={"12px"} p={"1px"}>
-                        {following?.full_name}
-                      </Text>
-
-                      <Text className="username" fontSize={"12px"} p={"1px"}>
-                        @{following?.username}
-                      </Text>
-
-                      <Text className="username" fontSize={"12px"} p={"1px"}>
-                        {following?.profile_description}
-                      </Text>
-                    </CardBody>
-                  </Stack>
-                  <Box display={"flex"} justifyContent={"center"} w={"120px"}>
-                    <Button
-                      justifyContent={"center"}
-                      borderRadius={"10px"}
-                      border={"1px solid #fff"}
-                      fontSize={"12px"}
-                      p={4}
-                      h={"20px"}
-                      alignSelf={"center"}
+              {isLoadingUser ? (
+                <Spinner size="xl" />
+              ) : (
+                <>
+                  {user.user?.following?.map((following: TFollow) => (
+                    <Card
+                      direction={{ base: "column", sm: "row" }}
+                      overflow="hidden"
+                      variant="outline"
+                      mt={2}
                     >
-                      Follow
-                    </Button>
-                  </Box>
-                </Card>
-              ))}
+                      <Avatar
+                        objectFit="cover"
+                        alignSelf={"center"}
+                        ml={2}
+                        mr={2}
+                        h={"50px"}
+                        w={"50px"}
+                        src={following?.profile_picture}
+                      />
+
+                      <Stack w={"400px"}>
+                        <CardBody>
+                          <Text
+                            className="fullname"
+                            fontSize={"12px"}
+                            p={"1px"}
+                          >
+                            {following?.full_name}
+                          </Text>
+
+                          <Text
+                            className="username"
+                            fontSize={"12px"}
+                            p={"1px"}
+                          >
+                            @{following?.username}
+                          </Text>
+
+                          <Text
+                            className="username"
+                            fontSize={"12px"}
+                            p={"1px"}
+                          >
+                            {following?.profile_description}
+                          </Text>
+                        </CardBody>
+                      </Stack>
+
+                      <Box
+                        display={"flex"}
+                        justifyContent={"center"}
+                        w={"120px"}
+                      >
+                        <Button
+                          justifyContent={"center"}
+                          borderRadius={"10px"}
+                          border={"1px solid #fff"}
+                          fontSize={"12px"}
+                          p={4}
+                          h={"20px"}
+                          alignSelf={"center"}
+                          onClick={() => handleClickFollow(following.id)}
+                        >
+                          Unfollow
+                        </Button>
+                      </Box>
+                    </Card>
+                  ))}
+                </>
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>

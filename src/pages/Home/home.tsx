@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Spinner } from "@chakra-ui/react";
 import Threads from "../../features/threads/components/Threads";
 import { Api } from "../../libs/axios-threads";
 import { useQuery } from "@tanstack/react-query";
@@ -6,13 +6,15 @@ import IThreads from "../../types/ThreadType";
 import FormThreads from "../../components/FormThreads/FormThreads";
 
 export default function Home() {
-  const { data: threads } = useQuery({
+  const { data: threads, isLoading } = useQuery({
     queryKey: ["threads"],
     queryFn: async () => {
       const { data } = await Api.get("/threads");
       return data.data;
     },
   });
+
+  if (isLoading) return <Spinner size="xl" />;
 
   return (
     <Box w={"550px"}>

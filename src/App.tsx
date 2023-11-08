@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { Api, setAuthToken } from "./libs/axios-threads";
 import { AUTH_ERROR } from "./store/RootReducer";
 import Follow from "./pages/Follow/Follow";
+import Search from "./pages/Search/Search";
 
 const theme = extendBaseTheme({
   styles: {
@@ -98,6 +99,14 @@ function App() {
                 element={
                   <Main>
                     <Follow />{" "}
+                  </Main>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <Main>
+                    <Search />{" "}
                   </Main>
                 }
               />

@@ -15,23 +15,17 @@ import {
 import Foryou from "../Suggested/Foryou";
 import Footer from "../Footer/Footer";
 import { useUser } from "../../features/threads/hooks/useUser";
-import { useSelector } from "react-redux";
 
 export default function Profile() {
   const { user } = useUser();
-  console.log(user, "iniuser gan");
-
-  const profile = useSelector((state: any) => {
-    state;
-  });
 
   return (
-    <Box m={4}>
-      <Card gap={4} borderRadius={8} bg={"#252927"} mb={4} margin={2}>
+    <Box m={2}>
+      <Card gap={4} borderRadius={8} bg={"#252927"} mb={2}>
         <CardHeader my={2} marginLeft={4}>
           <Heading fontWeight={"medium"}>My Profile</Heading>
         </CardHeader>
-        <CardBody mb={2}>
+        <CardBody mb={1}>
           <Box>
             <Box borderRadius={"20px"} m={2}>
               <Image
